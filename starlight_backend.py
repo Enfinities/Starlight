@@ -25,8 +25,9 @@ def edit_value(filename: str, user_id, field: str, new_value):
     with open(filename, 'r') as file:
         json_data = json.load(file)
 
-    json_data[user_id][field] = new_value
-    if not user_id:
+    if user_id:
+        json_data[user_id][field] = new_value
+    elif not user_id:
         json_data[field] = new_value
 
     with open(filename, 'w') as file:

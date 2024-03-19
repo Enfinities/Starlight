@@ -6,15 +6,15 @@ from starlight_backend import read_json, get_leetcode_stats, edit_value
 
 async def timer_main(filename):
     """Sets the timer to repeat every week. On end of cycle, checks who's been slacking and sends them a warning."""
-    interval = get_remaining_duration(filename)
     check_period = 30 * 60
     while True:
+        interval = get_remaining_duration(filename)
         cycle_update(filename)
         if await timer(interval, check_period) is True:
             new_interval_start = int(datetime.now().timestamp())
             edit_value(filename, None, 'interval_start_time', new_interval_start)
             json_data = read_json(filename)
-            for user_id in [key for key in json_data.keys() if isinstance(key, int)]:
+            for user_id in [key for key in json_data.keys() if key.isdigit()]:
                 leet_stats = get_leetcode_stats(json_data[user_id]['leetcode_username'])
                 if not check_slackers(json_data[user_id], leet_stats):
                     warning_message = format_warning(user_id, json_data[user_id], leet_stats)
@@ -48,8 +48,8 @@ async def timer(duration, check_period):
     while True:
         await asyncio.sleep(check_period)
         timer_countdown -= check_period
+        print(f'test {timer_countdown}')
         if timer_countdown <= 0:
-            print(f'test {timer_countdown}')
             return True
 
 
