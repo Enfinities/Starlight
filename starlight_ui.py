@@ -49,23 +49,35 @@ async def star_help(ctx: SlashContext):
                          sub_cmd_description="Check your stars")
 async def status(ctx: SlashContext):
     user_id = ctx.author.id
-    pass
+    await ctx.send(user_id)
 
 
+@base_command.subcommand(sub_cmd_name="all_status",
+                         sub_cmd_description="Check everyone's stars")
 async def all_status(ctx: SlashContext):
-    pass
+    user_id = ctx.author.id
+    await ctx.send(user_id)
 
 
+@base_command.subcommand(sub_cmd_name="update_warning_message",
+                         sub_cmd_description="Update your warning message")
 async def update_warning_message(ctx: SlashContext, message: str):
-    pass
+    user_id = ctx.author.id
+    await ctx.send(user_id)
 
 
+@base_command.subcommand(sub_cmd_name="update_warning_image",
+                         sub_cmd_description="Update your warning image with an image url")
 async def update_warning_gif_url(ctx: SlashContext, url: str):
-    pass
+    user_id = ctx.author.id
+    await ctx.send(user_id)
 
 
+@base_command.subcommand(sub_cmd_name="update_quota",
+                         sub_cmd_description="Update your quota of stars required each week")
 async def update_quota(ctx: SlashContext, starts: int):
-    pass
+    user_id = ctx.author.id
+    await ctx.send(user_id)
 
 if __name__ == "__main__":
     # Set the cwd to the directory where this file lives
