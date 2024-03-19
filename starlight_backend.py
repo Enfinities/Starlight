@@ -41,7 +41,7 @@ def initialize_json(filename):
                                        'leetcode_username': 'tetragrey',
                                        'weekly_quota': 0,
                                        'stars_at_week_start': 0,
-                                       'warning_message': "Grey, it looks like you didn't get your stars for this"
+                                       'warning_message': "Grey, it looks like you didn't get your stars for this "
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
@@ -49,7 +49,7 @@ def initialize_json(filename):
                                        'leetcode_username': 'Enfinities',
                                        'weekly_quota': 0,
                                        'stars_at_week_start': 0,
-                                       'warning_message': "Kat, it looks like you didn't get your stars for this"
+                                       'warning_message': "Kat, it looks like you didn't get your stars for this "
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
@@ -57,7 +57,7 @@ def initialize_json(filename):
                                        'leetcode_username': 'MrPositions',
                                        'weekly_quota': 0,
                                        'stars_at_week_start': 0,
-                                       'warning_message': "Anytime, it looks like you didn't get your stars for this"
+                                       'warning_message': "Anytime, it looks like you didn't get your stars for this "
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
@@ -65,7 +65,7 @@ def initialize_json(filename):
                                         'leetcode_username': 'Grindelia',
                                         'weekly_quota': 0,
                                         'stars_at_week_start': 0,
-                                        'warning_message': "Raspberry Kitten, it looks like you didn't get your stars"
+                                        'warning_message': "Raspberry Kitten, it looks like you didn't get your stars "
                                                            "for this week...",
                                         'warning_image_url': 'https://tenor.com/view/caulifla-dragon-ball-z-super-'
                                                              'saiyan-gif-15035166'},
