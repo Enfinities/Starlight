@@ -29,7 +29,7 @@ async def star_help(ctx: SlashContext):
     api_link = 'https://leetcodestats.cyclic.app/<username>'
     star_chips_img = 'https://media1.tenor.com/m/ALBBBwfJxfUAAAAd/yugioh-joey.gif'
     msg = (f"{display_name.title()}, it is time you become a leet coder.\n"
-           f"You can find the leet code puzzles here, {leet_link}.\n"
+           f"You can find the leet code puzzles here, {leet_link}.\n\n"
            f"The rules are:\n"
            f"- No GPT for code, but you can ask GPT to explain concepts or data structures.\n"
            f"- You can look at the solution video when you want, but try not to, so you learn faster.\n\n"
@@ -48,6 +48,7 @@ async def star_help(ctx: SlashContext):
 @base_command.subcommand(sub_cmd_name="status",
                          sub_cmd_description="Check your stars")
 async def status(ctx: SlashContext):
+    # Show number of solved problems and calculate stars
     user_id = ctx.author.id
     await ctx.send(user_id)
 
