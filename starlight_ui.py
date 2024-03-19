@@ -61,8 +61,8 @@ async def status(ctx: SlashContext, show_everyone=False):
     stats = starlight_backend.get_leetcode_stats(leet_name)
     msg = (f"``` ```"
            f"Username: {leet_name}\n- Stars: {stats['stars']}\n"
-           f"- Stars This Week: {stars_at_week_start - stats['stars']}"
-           f"- Weekly Star Quota: {weekly_quota}"
+           f"- Stars This Week: {stars_at_week_start - stats['stars']}\n"
+           f"- Weekly Star Quota: {weekly_quota}\n"
            f"- Total Solved: {stats['totalSolved']}\n"
            f"- Easy Solved: {stats['easySolved']}\n- Medium Solved: {stats['mediumSolved']}\n"
            f"- Hard Solved: {stats['hardSolved']}\n"
