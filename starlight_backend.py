@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import requests
 
 def read_json(filename):
     """Read all data from a JSON file.
@@ -37,6 +38,7 @@ def initialize_json(filename):
     """
     birth_time = int(datetime.now().timestamp())
     start_data = {319472632493768705: {'nick': 'Grey',
+                                       'leetcode_username': 'tetragrey',
                                        'weekly_quota': 0,
                                        'stars_at_week_start': 0,
                                        'warning_message': "Grey, it looks like you didn't get your stars for this"
@@ -44,6 +46,7 @@ def initialize_json(filename):
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
                   583730259409633310: {'nick': 'Kat',
+                                       'leetcode_username': 'Enfinities',
                                        'weekly_quota': 0,
                                        'stars_at_week_start': 0,
                                        'warning_message': "Kat, it looks like you didn't get your stars for this"
@@ -51,6 +54,7 @@ def initialize_json(filename):
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
                   309330832047210497: {'nick': 'Anytime',
+                                       'leetcode_username': 'MrPositions',
                                        'weekly_quota': 0,
                                        'stars_at_week_start': 0,
                                        'warning_message': "Anytime, it looks like you didn't get your stars for this"
@@ -58,6 +62,7 @@ def initialize_json(filename):
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
                   1015276712948400148: {'nick': 'Raspberry Kitten',
+                                        'leetcode_username': 'Grindelia',
                                         'weekly_quota': 0,
                                         'stars_at_week_start': 0,
                                         'warning_message': "Raspberry Kitten, it looks like you didn't get your stars"
@@ -69,3 +74,21 @@ def initialize_json(filename):
 
     with open(filename, 'w') as file:
         json.dump(start_data, file, indent=4)
+
+
+def get_leetcode_stats(username):
+    api_link = f'https://leetcodestats.cyclic.app/{username}'
+    response = requests.get(api_link)
+
+    if response.status_code == 200:
+        data = response.json()
+        return {
+            "username": username,
+            "totalSolved": data.get("totalSolved", 0),
+            "easySolved": data.get("easySolved", 0),
+            "mediumSolved": data.get("mediumSolved", 0),
+            "hardSolved": data.get("hardSolved", 0)
+        }
+    else:
+        print(f"Failed to fetch data for user '{username}'")
+        return None
