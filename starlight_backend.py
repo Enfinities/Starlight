@@ -1,5 +1,5 @@
 import json
-
+from datetime import datetime
 
 def read_json(filename):
     """Read all data from a JSON file.
@@ -35,30 +35,36 @@ def initialize_json(filename):
 
     :param filename: (str) the name of the JSON file being created (ends with .json)
     """
+    birth_time = int(datetime.now().timestamp())
     start_data = {319472632493768705: {'nick': 'Grey',
                                        'weekly_quota': 0,
+                                       'stars_at_week_start': 0,
                                        'warning_message': "Grey, it looks like you didn't get your stars for this"
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
                   583730259409633310: {'nick': 'Kat',
                                        'weekly_quota': 0,
+                                       'stars_at_week_start': 0,
                                        'warning_message': "Kat, it looks like you didn't get your stars for this"
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
                   309330832047210497: {'nick': 'Anytime',
                                        'weekly_quota': 0,
+                                       'stars_at_week_start': 0,
                                        'warning_message': "Anytime, it looks like you didn't get your stars for this"
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
                                                             '8682463232604832341'},
                   1015276712948400148: {'nick': 'Raspberry Kitten',
                                         'weekly_quota': 0,
+                                        'stars_at_week_start': 0,
                                         'warning_message': "Raspberry Kitten, it looks like you didn't get your stars"
                                                            "for this week...",
                                         'warning_image_url': 'https://tenor.com/view/caulifla-dragon-ball-z-super-'
-                                                             'saiyan-gif-15035166'}
+                                                             'saiyan-gif-15035166'},
+                  'birth_time': birth_time
                   }
 
     with open(filename, 'w') as file:
