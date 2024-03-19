@@ -82,8 +82,13 @@ def get_leetcode_stats(username):
 
     if response.status_code == 200:
         data = response.json()
+        stars = 0
+        stars += data.get("easySolved", 0) * 1
+        stars += data.get("mediumSolved", 0) * 3
+        stars += data.get("hardSolved", 0) * 5
         return {
             "username": username,
+            "stars": stars,
             "totalSolved": data.get("totalSolved", 0),
             "easySolved": data.get("easySolved", 0),
             "mediumSolved": data.get("mediumSolved", 0),
@@ -91,4 +96,11 @@ def get_leetcode_stats(username):
         }
     else:
         print(f"Failed to fetch data for user '{username}'")
-        return None
+        return {
+            "username": "not found",
+            "stars": 0,
+            "totalSolved": 0,
+            "easySolved": 0,
+            "mediumSolved": 0,
+            "hardSolved": 0
+        }
