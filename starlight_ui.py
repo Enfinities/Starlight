@@ -27,7 +27,7 @@ async def star_help(ctx: SlashContext):
     display_name = ctx.author.display_name
     leet_link = 'https://leetcode.com/problemset/'
     api_link = 'https://leetcodestats.cyclic.app/<username>'
-    star_chips_img = 'https://i.ytimg.com/vi/2whikHH9Jpw/hqdefault.jpg'
+    star_chips_img = 'https://media1.tenor.com/m/ALBBBwfJxfUAAAAd/yugioh-joey.gif'
     msg = (f"{display_name.title()}, it is time you become a leet coder.\n"
            f"You can find the leet code puzzles here, {leet_link}.\n"
            f"The rules are:\n"
@@ -39,7 +39,7 @@ async def star_help(ctx: SlashContext):
            f"As for the amount of stars each problem is worth:\n"
            f"- Easy: 1 star\n- Medium: 3 stars\n- Hard: 5 stars\n\n"
            f"By default the quota will be 4 stars per week, but this can be adjusted as you get better.\n\n"
-           f"Lastly, the bot will send you an alarm if you're under your expected star amount, based on your quota."
+           f"Lastly, the bot will send you an alarm if you're under your expected star amount, based on your quota.\n"
            f"{star_chips_img}")
 
     await ctx.send(msg, ephemeral=True)
