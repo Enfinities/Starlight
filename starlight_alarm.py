@@ -41,14 +41,15 @@ async def timer(duration, check_period):
     """Counts down from whatever the duration is (in seconds), returns True when the countdown ends.
 
     :param duration: (int) the number of seconds for each interval. The plan is to make this the number of seconds
-    in one week, so that we haev intervales of one week
+    in one week, so that we have intervals of one week
     :param check_period: (int) the number of seconds that will pass between checks to see if the interval has ended.
     """
     timer_countdown = int(duration)
     while True:
         await asyncio.sleep(check_period)
         timer_countdown -= check_period
-        print(f'test {timer_countdown}')
+        print(f'Countdown: {timer_countdown} seconds to next cycle.\n'
+              f'The next check will occur in 30 minutes.')
         if timer_countdown <= 0:
             return True
 
