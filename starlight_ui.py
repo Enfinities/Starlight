@@ -1,5 +1,7 @@
 from decouple import config
 from interactions import (SlashContext, OptionType, Client, SlashCommand, slash_option, listen)
+# import traceback
+# from interactions.api.events import CommandError
 import os
 
 from starlight_alarm import timer_main
@@ -18,6 +20,21 @@ async def on_ready():
     logs_channel = bot.get_channel(channel_id=config("CHANNEL_ID"))
     async for warning_message in timer_main(config("FILENAME")):
         await logs_channel.send(warning_message)
+
+
+# @listen(CommandError, disable_default_listeners=True)  # tell the dispatcher that this replaces the default listener
+# async def on_command_error(event: CommandError):
+#     """Listens for any errors in slash commands. If an error is raised, this listener will catch it and store all the
+#     error messages in event.error. These errors are sent to the person who used the slash command as an ephemeral msg.
+#
+#     :param event: (object) contains information about the interaction
+#     """
+#     traceback.print_exception(event.error)
+#     if not event.ctx.responded:
+#         errors = ''
+#         if event.error.args[0]:
+#             errors = '\nAlso! '.join(event.error.args)
+#         await event.ctx.send('Error! ' + errors, ephemeral=True)
 
 
 base_command = SlashCommand(
@@ -81,30 +98,58 @@ async def status(ctx: SlashContext, show_everyone=False):
 
 @base_command.subcommand(sub_cmd_name="all_status",
                          sub_cmd_description="Check everyone's stars")
-async def all_status(ctx: SlashContext):
-    user_id = ctx.author.id
-    await ctx.send(user_id)
+@slash_option(name="show_everyone", description="Want the post to be visible to everyone?",
+              opt_type=OptionType.BOOLEAN, required=False)
+async def all_status(ctx: SlashContext, show_everyone=False):
+    data = starlight_backend.read_json(config("FILENAME"))
+    week_end_unix = data['interval_start_time'] + (7 * 24 * 60 * 60)
+
+    status_reports = []
+    for user_id in [key for key in data.keys() if key.isdigit()]:
+        nick = data[user_id]['nick']
+        leet_name = data[user_id]['leetcode_username']
+        weekly_quota = data[user_id]['weekly_quota']
+        stars_at_week_start = data[user_id]['stars_at_week_start']
+        stats = starlight_backend.get_leetcode_stats(leet_name)
+
+        user_report = (f"**{nick}** ({leet_name}):"
+                       f"\n- Lifetime stars: {stats['stars']}"
+                       f"\n- Lifetime easy problems solved: {stats['easySolved']}"
+                       f"\n- Lifetime medium problems solved: {stats['mediumSolved']}"
+                       f"\n- Lifetime hard problems solved: {stats['hardSolved']}"
+                       f"\n- This week's stars: {stats['stars'] - stars_at_week_start} so far of {weekly_quota}")
+
+    msg = f"Here are everyone's stats right now (week ends <t:{week_end_unix}:f>):" + "\n``` ```".join(status_reports)
+    await ctx.send(msg, ephemeral=not show_everyone)
 
 
 @base_command.subcommand(sub_cmd_name="update_warning_message",
                          sub_cmd_description="Update your warning message")
+@slash_option(name="warning_message", description="What would you like your warning message to be?",
+              opt_type=OptionType.STRING, required=True)
 async def update_warning_message(ctx: SlashContext, message: str):
-    user_id = ctx.author.id
-    await ctx.send(user_id)
+    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'warning_message', message)
+    await ctx.send(f"Warning message changed to:"
+                   f"\n{message}", ephemeral=True)
 
 
 @base_command.subcommand(sub_cmd_name="update_warning_image",
                          sub_cmd_description="Update your warning image with an image url")
+@slash_option(name="warning_image_url", description="What would you like your warning image (or gif) to be?",
+              opt_type=OptionType.STRING, required=True)
 async def update_warning_gif_url(ctx: SlashContext, url: str):
-    user_id = ctx.author.id
-    await ctx.send(user_id)
+    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'warning_image_url', url)
+    await ctx.send(f"Warning image changed to:"
+                   f"\n{url}", ephemeral=True)
 
 
 @base_command.subcommand(sub_cmd_name="update_quota",
                          sub_cmd_description="Update your quota of stars required each week")
+@slash_option(name="new quota", description="What would you like your quota to be for this week?",
+              opt_type=OptionType.INTEGER, required=True)
 async def update_quota(ctx: SlashContext, starts: int):
-    user_id = ctx.author.id
-    await ctx.send(user_id)
+    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'weekly_quota', starts)
+    await ctx.send(f"Quota for this week changed to: {starts}", ephemeral=True)
 
 
 if __name__ == "__main__":
