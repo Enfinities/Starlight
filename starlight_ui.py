@@ -47,10 +47,31 @@ async def star_help(ctx: SlashContext):
 
 @base_command.subcommand(sub_cmd_name="status",
                          sub_cmd_description="Check your stars")
-async def status(ctx: SlashContext):
+@slash_option(name="show_everyone", description="Want the post to be visible to everyone?",
+              opt_type=OptionType.BOOLEAN, required=False)
+async def status(ctx: SlashContext, show_everyone=False):
     # Show number of solved problems and calculate stars
-    user_id = ctx.author.id
-    await ctx.send(user_id)
+    user_id = str(ctx.author.id)
+    data = starlight_backend.read_json(config("FILENAME"))
+    leet_name = data[user_id]['leetcode_username']
+    weekly_quota = data[user_id]['weekly_quota']
+    stars_at_week_start = data[user_id]['stars_at_week_start']
+    warning_message = data[user_id]['warning_message']
+    warning_image = data[user_id]['warning_image_url']
+    stats = starlight_backend.get_leetcode_stats(leet_name)
+    msg = (f"``` ```"
+           f"Username: {leet_name}\n- Stars: {stats['stars']}\n"
+           f"- Stars This Week: {stars_at_week_start - stats['stars']}"
+           f"- Weekly Star Quota: {weekly_quota}"
+           f"- Total Solved: {stats['totalSolved']}\n"
+           f"- Easy Solved: {stats['easySolved']}\n- Medium Solved: {stats['mediumSolved']}\n"
+           f"- Hard Solved: {stats['hardSolved']}\n"
+           f"- Warning Message: {warning_message}\n"
+           f"- Warning Image: {warning_image}\n"
+           f"``` ```"
+           )
+
+    await ctx.send(msg, ephemeral=not show_everyone)
 
 
 @base_command.subcommand(sub_cmd_name="all_status",
