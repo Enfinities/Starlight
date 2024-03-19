@@ -14,7 +14,7 @@ def read_json(filename):
     return json_data
 
 
-def edit_value(filename: str, user_id: int, field: str, new_value):
+def edit_value(filename: str, user_id, field: str, new_value):
     """Edit a value for a particular user in the JSON file.
 
     :param filename: (str) the JSON file where the data is stored (ends with .json)
@@ -26,6 +26,8 @@ def edit_value(filename: str, user_id: int, field: str, new_value):
         json_data = json.load(file)
 
     json_data[user_id][field] = new_value
+    if not user_id:
+        json_data[field] = new_value
 
     with open(filename, 'w') as file:
         json.dump(json_data, file, indent=4)
@@ -69,7 +71,7 @@ def initialize_json(filename):
                                                            "for this week...",
                                         'warning_image_url': 'https://tenor.com/view/caulifla-dragon-ball-z-super-'
                                                              'saiyan-gif-15035166'},
-                  'birth_time': birth_time
+                  'interval_start_time': birth_time
                   }
 
     with open(filename, 'w') as file:
