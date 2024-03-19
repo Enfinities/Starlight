@@ -6,13 +6,14 @@ async def timer_main(filename):
     """Sets the timer to repeat every week. On end of cycle, checks who's been slacking and sends them a warning."""
     seconds = 7 * 24 * 60 * 60
     check_period = 30 * 60
-    if await timer(seconds, check_period) is True:
-        json_data = read_json(filename)
-        for user_id in [key for key in json_data.keys() if isinstance(key, int)]:
-            leet_stats = get_leetcode_stats(json_data[user_id]['leedcode_username'])
-            if not check_slackers(json_data[user_id], leet_stats):
-                warning_message = format_warning(json_data[user_id], leet_stats)
-                yield warning_message
+    while True:
+        if await timer(seconds, check_period) is True:
+            json_data = read_json(filename)
+            for user_id in [key for key in json_data.keys() if isinstance(key, int)]:
+                leet_stats = get_leetcode_stats(json_data[user_id]['leetcode_username'])
+                if not check_slackers(json_data[user_id], leet_stats):
+                    warning_message = format_warning(json_data[user_id], leet_stats)
+                    yield warning_message
 
 
 async def timer(duration, check_period):
