@@ -1,6 +1,8 @@
 from decouple import config
+from json import dump as json_dump
 from interactions import (SlashContext, OptionType, Client, SlashCommand, slash_option, listen)
 import os
+import starlight_backend
 
 
 @listen()
@@ -8,6 +10,9 @@ async def on_ready():
     """Lets the console know when the bot is online."""
     print("Ready")
     print(f"This bot is owned by {bot.owner}")
+
+    if not os.path.isfile(config("FILENAME")):
+        starlight_backend.initialize_json(config("FILENAME"))
 
 
 base_command = SlashCommand(
@@ -43,6 +48,7 @@ async def star_help(ctx: SlashContext):
 @base_command.subcommand(sub_cmd_name="status",
                          sub_cmd_description="Check your stars")
 async def status(ctx: SlashContext):
+    user_id = ctx.author.id
     pass
 
 
