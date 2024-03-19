@@ -25,8 +25,9 @@ def edit_value(filename: str, user_id, field: str, new_value):
     with open(filename, 'r') as file:
         json_data = json.load(file)
 
-    json_data[user_id][field] = new_value
-    if not user_id:
+    if user_id:
+        json_data[user_id][field] = new_value
+    elif not user_id:
         json_data[field] = new_value
 
     with open(filename, 'w') as file:
@@ -42,7 +43,7 @@ def initialize_json(filename):
     start_data = {319472632493768705: {'nick': 'Grey',
                                        'leetcode_username': 'tetragrey',
                                        'weekly_quota': 0,
-                                       'stars_at_week_start': 0,
+                                       'stars_at_week_start': get_leetcode_stats('tetragrey')['stars'],
                                        'warning_message': "Grey, it looks like you didn't get your stars for this "
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
@@ -50,7 +51,7 @@ def initialize_json(filename):
                   583730259409633310: {'nick': 'Kat',
                                        'leetcode_username': 'Enfinities',
                                        'weekly_quota': 0,
-                                       'stars_at_week_start': 0,
+                                       'stars_at_week_start': get_leetcode_stats('Enfinities')['stars'],
                                        'warning_message': "Kat, it looks like you didn't get your stars for this "
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
@@ -58,7 +59,7 @@ def initialize_json(filename):
                   309330832047210497: {'nick': 'Anytime',
                                        'leetcode_username': 'MrPositions',
                                        'weekly_quota': 0,
-                                       'stars_at_week_start': 0,
+                                       'stars_at_week_start': get_leetcode_stats('MrPositions')['stars'],
                                        'warning_message': "Anytime, it looks like you didn't get your stars for this "
                                                           "week...",
                                        'warning_image_url': 'https://tenor.com/view/cat-reminder-gif-'
@@ -66,7 +67,7 @@ def initialize_json(filename):
                   1015276712948400148: {'nick': 'Raspberry Kitten',
                                         'leetcode_username': 'Grindelia',
                                         'weekly_quota': 0,
-                                        'stars_at_week_start': 0,
+                                        'stars_at_week_start': get_leetcode_stats('Grindelia')['stars'],
                                         'warning_message': "Raspberry Kitten, it looks like you didn't get your stars "
                                                            "for this week...",
                                         'warning_image_url': 'https://tenor.com/view/caulifla-dragon-ball-z-super-'

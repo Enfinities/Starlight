@@ -6,20 +6,20 @@ from starlight_backend import read_json, get_leetcode_stats, edit_value
 
 async def timer_main(filename):
     """Sets the timer to repeat every week. On end of cycle, checks who's been slacking and sends them a warning."""
-    interval = get_remaining_duration(filename)
     check_period = 30 * 60
     while True:
-        cycle_update(filename)
+        interval = get_remaining_duration(filename)
         if await timer(interval, check_period) is True:
             new_interval_start = int(datetime.now().timestamp())
             edit_value(filename, None, 'interval_start_time', new_interval_start)
             json_data = read_json(filename)
-            for user_id in [key for key in json_data.keys() if isinstance(key, int)]:
+            for user_id in [key for key in json_data.keys() if key.isdigit()]:
                 leet_stats = get_leetcode_stats(json_data[user_id]['leetcode_username'])
                 if not check_slackers(json_data[user_id], leet_stats):
                     warning_message = format_warning(user_id, json_data[user_id], leet_stats)
                     yield warning_message
                     yield json_data[user_id]['warning_image_url']
+                    cycle_update(filename)
 
 
 def get_remaining_duration(filename):
@@ -48,8 +48,8 @@ async def timer(duration, check_period):
     while True:
         await asyncio.sleep(check_period)
         timer_countdown -= check_period
+        print(f'test {timer_countdown}')
         if timer_countdown <= 0:
-            print(f'test {timer_countdown}')
             return True
 
 
@@ -78,6 +78,6 @@ def cycle_update(filename):
     """Update all values that need to be updated so the cycle can start anew"""
     # Find total stars and send them into the json as stars_at_week_start
     json_data = read_json(filename)
-    for user_id in [key for key in json_data.keys() if isinstance(key, int)]:
+    for user_id in [key for key in json_data.keys() if key.isdigit()]:
         leet_stats = get_leetcode_stats(json_data[user_id]['leetcode_username'])
         edit_value(filename, user_id, 'stars_at_week_start', leet_stats['stars'])
