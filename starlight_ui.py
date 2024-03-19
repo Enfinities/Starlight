@@ -1,7 +1,8 @@
 from decouple import config
-from json import dump as json_dump
 from interactions import (SlashContext, OptionType, Client, SlashCommand, slash_option, listen)
 import os
+
+from starlight_alarm import timer_main
 import starlight_backend
 
 
@@ -13,6 +14,10 @@ async def on_ready():
 
     if not os.path.isfile(config("FILENAME")):
         starlight_backend.initialize_json(config("FILENAME"))
+
+    logs_channel = bot.get_channel(channel_id=config("CHANNEL_ID"))
+    async for warning_message in timer_main(config("FILENAME")):
+        await logs_channel.send(warning_message)
 
 
 base_command = SlashCommand(
@@ -100,6 +105,7 @@ async def update_warning_gif_url(ctx: SlashContext, url: str):
 async def update_quota(ctx: SlashContext, starts: int):
     user_id = ctx.author.id
     await ctx.send(user_id)
+
 
 if __name__ == "__main__":
     # Set the cwd to the directory where this file lives
