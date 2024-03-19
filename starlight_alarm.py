@@ -28,7 +28,7 @@ def get_remaining_duration(filename):
 
     :return: (int) the number of seconds remaining before the interval ends
     """
-    seconds_in_week = 20 #7 * 24 * 60 * 60
+    seconds_in_week = 7 * 24 * 60 * 60
     time_now = int(datetime.now().timestamp())
     json_data = read_json(filename)
     interval_start_time = json_data['interval_start_time']
