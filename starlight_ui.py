@@ -1,7 +1,7 @@
 from decouple import config
 from interactions import (SlashContext, OptionType, Client, SlashCommand, slash_option, listen)
-# import traceback
-# from interactions.api.events import CommandError
+import traceback
+from interactions.api.events import CommandError
 import os
 
 from starlight_alarm import timer_main
@@ -22,19 +22,19 @@ async def on_ready():
         await logs_channel.send(warning_message)
 
 
-# @listen(CommandError, disable_default_listeners=True)  # tell the dispatcher that this replaces the default listener
-# async def on_command_error(event: CommandError):
-#     """Listens for any errors in slash commands. If an error is raised, this listener will catch it and store all the
-#     error messages in event.error. These errors are sent to the person who used the slash command as an ephemeral msg.
-#
-#     :param event: (object) contains information about the interaction
-#     """
-#     traceback.print_exception(event.error)
-#     if not event.ctx.responded:
-#         errors = ''
-#         if event.error.args[0]:
-#             errors = '\nAlso! '.join(event.error.args)
-#         await event.ctx.send('Error! ' + errors, ephemeral=True)
+@listen(CommandError, disable_default_listeners=True)  # tell the dispatcher that this replaces the default listener
+async def on_command_error(event: CommandError):
+    """Listens for any errors in slash commands. If an error is raised, this listener will catch it and store all the
+    error messages in event.error. These errors are sent to the person who used the slash command as an ephemeral msg.
+
+    :param event: (object) contains information about the interaction
+    """
+    traceback.print_exception(event.error)
+    if not event.ctx.responded:
+        errors = ''
+        if event.error.args[0]:
+            errors = '\nAlso! '.join(event.error.args)
+        await event.ctx.send('Error! ' + errors, ephemeral=True)
 
 
 base_command = SlashCommand(
@@ -148,9 +148,9 @@ async def update_warning_gif_url(ctx: SlashContext, warning_image_url: str):
                          sub_cmd_description="Update your quota of stars required each week")
 @slash_option(name="new_quota", description="What would you like your quota to be for this week?",
               opt_type=OptionType.INTEGER, required=True)
-async def update_quota(ctx: SlashContext, starts: int):
-    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'weekly_quota', starts)
-    await ctx.send(f"Quota for this week changed to: {starts}", ephemeral=True)
+async def update_quota(ctx: SlashContext, new_quota: int):
+    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'weekly_quota', 'new_quota')
+    await ctx.send(f"Quota for this week changed to: {new_quota}", ephemeral=True)
 
 
 if __name__ == "__main__":

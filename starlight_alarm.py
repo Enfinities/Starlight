@@ -10,8 +10,6 @@ async def timer_main(filename):
     while True:
         interval = get_remaining_duration(filename)
         if await timer(interval, check_period) is True:
-            new_interval_start = int(datetime.now().timestamp())
-            edit_value(filename, None, 'interval_start_time', new_interval_start)
             json_data = read_json(filename)
             for user_id in [key for key in json_data.keys() if key.isdigit()]:
                 leet_stats = get_leetcode_stats(json_data[user_id]['leetcode_username'])
@@ -49,7 +47,7 @@ async def timer(duration, check_period):
         await asyncio.sleep(check_period)
         timer_countdown -= check_period
         print(f'Countdown: {timer_countdown} seconds to next cycle.\n'
-              f'The next check will occur in 30 minutes.')
+              f'The next check will occur in {int(check_period/60)} minutes.')
         if timer_countdown <= 0:
             return True
 
@@ -77,6 +75,10 @@ def format_warning(user_id, user_json_data, user_leet_data):
 
 def cycle_update(filename):
     """Update all values that need to be updated so the cycle can start anew"""
+    # Set the interval start time for the new cycle
+    new_interval_start = int(datetime.now().timestamp())
+    edit_value(filename, None, 'interval_start_time', new_interval_start)
+
     # Find total stars and send them into the json as stars_at_week_start
     json_data = read_json(filename)
     for user_id in [key for key in json_data.keys() if key.isdigit()]:
