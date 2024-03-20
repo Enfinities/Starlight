@@ -128,20 +128,20 @@ async def all_status(ctx: SlashContext, show_everyone=False):
                          sub_cmd_description="Update your warning message")
 @slash_option(name="warning_message", description="What would you like your warning message to be?",
               opt_type=OptionType.STRING, required=True)
-async def update_warning_message(ctx: SlashContext, message: str):
-    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'warning_message', message)
+async def update_warning_message(ctx: SlashContext, warning_message: str):
+    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'warning_message', warning_message)
     await ctx.send(f"Warning message changed to:"
-                   f"\n{message}", ephemeral=True)
+                   f"\n{warning_message}", ephemeral=True)
 
 
 @base_command.subcommand(sub_cmd_name="update_warning_image",
                          sub_cmd_description="Update your warning image with an image url")
 @slash_option(name="warning_image_url", description="What would you like your warning image (or gif) to be?",
               opt_type=OptionType.STRING, required=True)
-async def update_warning_gif_url(ctx: SlashContext, url: str):
-    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'warning_image_url', url)
+async def update_warning_gif_url(ctx: SlashContext, warning_image_url: str):
+    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'warning_image_url', warning_image_url)
     await ctx.send(f"Warning image changed to:"
-                   f"\n{url}", ephemeral=True)
+                   f"\n{warning_image_url}", ephemeral=True)
 
 
 @base_command.subcommand(sub_cmd_name="update_quota",
