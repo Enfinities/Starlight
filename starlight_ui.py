@@ -101,6 +101,7 @@ async def status(ctx: SlashContext, show_everyone=False):
 @slash_option(name="show_everyone", description="Want the post to be visible to everyone?",
               opt_type=OptionType.BOOLEAN, required=False)
 async def all_status(ctx: SlashContext, show_everyone=False):
+    await ctx.defer()
     data = starlight_backend.read_json(config("FILENAME"))
     week_end_unix = data['interval_start_time'] + (7 * 24 * 60 * 60)
 
@@ -118,8 +119,8 @@ async def all_status(ctx: SlashContext, show_everyone=False):
                        f"\n- Lifetime medium problems solved: {stats['mediumSolved']}"
                        f"\n- Lifetime hard problems solved: {stats['hardSolved']}"
                        f"\n- This week's stars: {stats['stars'] - stars_at_week_start} so far of {weekly_quota}")
-
-    msg = f"Here are everyone's stats right now (week ends <t:{week_end_unix}:f>):" + "\n``` ```".join(status_reports)
+        status_reports.append(user_report)
+    msg = f"Here are everyone's stats right now (week ends <t:{week_end_unix}:f>):\n" + "\n``` ```".join(status_reports)
     await ctx.send(msg, ephemeral=not show_everyone)
 
 
@@ -145,7 +146,7 @@ async def update_warning_gif_url(ctx: SlashContext, url: str):
 
 @base_command.subcommand(sub_cmd_name="update_quota",
                          sub_cmd_description="Update your quota of stars required each week")
-@slash_option(name="new quota", description="What would you like your quota to be for this week?",
+@slash_option(name="new_quota", description="What would you like your quota to be for this week?",
               opt_type=OptionType.INTEGER, required=True)
 async def update_quota(ctx: SlashContext, starts: int):
     starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'weekly_quota', starts)
