@@ -101,7 +101,7 @@ async def status(ctx: SlashContext, show_everyone=False):
 @slash_option(name="show_everyone", description="Want the post to be visible to everyone?",
               opt_type=OptionType.BOOLEAN, required=False)
 async def all_status(ctx: SlashContext, show_everyone=False):
-    await ctx.defer()
+    await ctx.defer(ephemeral=not show_everyone)
     data = starlight_backend.read_json(config("FILENAME"))
     week_end_unix = data['interval_start_time'] + (7 * 24 * 60 * 60)
 
