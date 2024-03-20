@@ -148,7 +148,7 @@ async def update_warning_gif_url(ctx: SlashContext, url: str):
 @slash_option(name="new_quota", description="What would you like your quota to be for this week?",
               opt_type=OptionType.INTEGER, required=True)
 async def update_quota(ctx: SlashContext, new_quota: int):
-    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'weekly_quota', 'new_quota')
+    starlight_backend.edit_value(config("FILENAME"), str(ctx.author_id), 'weekly_quota', new_quota)
     await ctx.send(f"Quota for this week changed to: {new_quota}", ephemeral=True)
 
 
