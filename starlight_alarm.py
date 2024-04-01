@@ -19,8 +19,9 @@ async def timer_main(filename):
                     yield json_data[user_id]['warning_image_url']
             cycle_update(filename)
             json_data = read_json(filename)
+            new_interval_end = json_data['interval_start_time'] + (7 * 24 * 60 * 60)
             yield ("It's the start of a new week! Everyone's stars have been updated. Time to race for that quota! "
-                   f"After all, you only have until {json_data['interval_start_time'] + (7 * 24 * 60 * 60)}! ;)")
+                   f"After all, you only have until <t:{new_interval_end}:f>! ;)")
 
 
 def get_remaining_duration(filename):
