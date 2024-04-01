@@ -17,7 +17,10 @@ async def timer_main(filename):
                     warning_message = format_warning(user_id, json_data[user_id], leet_stats)
                     yield warning_message
                     yield json_data[user_id]['warning_image_url']
-                    cycle_update(filename)
+            cycle_update(filename)
+            json_data = read_json(filename)
+            yield ("It's the start of a new week! Everyone's stars have been updated. Time to race for that quota! "
+                   f"After all, you only have until {json_data['interval_start_time'] + (7 * 24 * 60 * 60)}! ;)")
 
 
 def get_remaining_duration(filename):
