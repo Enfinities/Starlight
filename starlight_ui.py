@@ -48,7 +48,7 @@ base_command = SlashCommand(
 async def star_help(ctx: SlashContext):
     display_name = ctx.author.display_name
     leet_link = 'https://leetcode.com/problemset/'
-    api_link = 'https://leetcodestats.cyclic.app/<username>'
+    api_link = 'https://leetcode-stats-api.herokuapp.com/<username>'
     star_chips_img = 'https://media1.tenor.com/m/ALBBBwfJxfUAAAAd/yugioh-joey.gif'
     msg = (f"{display_name.title()}, it is time you become a leet coder.\n"
            f"You can find the leet code puzzles here, {leet_link}.\n\n"

@@ -80,7 +80,7 @@ def initialize_json(filename):
 
 
 def get_leetcode_stats(username):
-    api_link = f'https://leetcodestats.cyclic.app/{username}'
+    api_link = f'https://leetcode-stats-api.herokuapp.com/{username}'
     response = requests.get(api_link)
 
     if response.status_code == 200:
